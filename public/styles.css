@@ -574,7 +574,36 @@ input:focus { outline: none; border-color: var(--primary); box-shadow: 0 0 0 3px
 .tally li { display: flex; justify-content: space-between; gap: 16px; padding: 6px 0; }
 .tally li + li { border-top: 1px dashed var(--line); }
 .tally .n { font-weight: 600; font-variant-numeric: tabular-nums; }
-.host-order header { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; }
-.host-order h2 { overflow-wrap: anywhere; }
-.host-order .when { font-size: var(--t-small); color: var(--muted); white-space: nowrap; }
-.host-order .link-btn { align-self: flex-start; }
+/* The host page is often open on a laptop on the counter, so it can use a bit more width. */
+.page.host-page { max-width: 760px; }
+
+/* Orders table: scrolls sideways inside its card if a row ever gets too wide for a phone. */
+.table-scroll { overflow-x: auto; margin-inline: -4px; padding-inline: 4px; }
+.orders-table { width: 100%; border-collapse: collapse; font-size: var(--t-small); line-height: 1.45; }
+.orders-table th,
+.orders-table td { padding: 12px 8px; text-align: left; vertical-align: top; border-top: 1px dashed var(--line); }
+.orders-table tr > :first-child { padding-left: 0; }
+.orders-table tr > :last-child { padding-right: 0; }
+.orders-table thead th {
+  padding-top: 0;
+  border-top: 0;
+  font-size: var(--t-label);
+  font-weight: 500;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+.orders-table tbody th { font-weight: 400; }
+.o-no { color: var(--muted); font-variant-numeric: tabular-nums; white-space: nowrap; }
+/* break-word (not anywhere) wraps long names between words and at hyphens, never mid-word. */
+.o-name { display: block; font-weight: 600; font-size: var(--t-body); overflow-wrap: break-word; }
+.o-when { display: block; color: var(--muted); white-space: nowrap; }
+.o-remove { display: block; margin-top: 6px; font-size: var(--t-small); }
+.o-drinks { display: flex; flex-direction: column; gap: 4px; }
+/* Quantity and name side by side; if a name has to wrap, it lines up under itself, not the quantity. */
+.o-drinks li { display: grid; grid-template-columns: auto 1fr; gap: .35em; }
+.o-qty { font-weight: 600; color: var(--primary); font-variant-numeric: tabular-nums; white-space: nowrap; }
+/* On a phone, # and Guest shrink to their content so Drinks gets the rest of the width. */
+@media (max-width: 560px) {
+  .orders-table .c-fit { width: 1%; }
+}

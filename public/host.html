@@ -30,7 +30,23 @@
       <div id="prep"><p class="muted">Orders will show here as guests place them.</p></div>
     </section>
 
-    <div id="orders" class="page" style="padding:0;gap:16px"></div>
+    <section class="card" aria-labelledby="orders-title">
+      <h2 id="orders-title">Orders</h2>
+      <div class="table-scroll">
+        <table class="orders-table">
+          <thead>
+            <tr>
+              <th scope="col" class="c-fit">#</th>
+              <th scope="col" class="c-fit">Guest</th>
+              <th scope="col">Drinks</th>
+            </tr>
+          </thead>
+          <tbody id="orders">
+            <tr><td colspan="3" class="muted">Loading…</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
   </main>
   <script src="/host.js" type="module"></script>
 </body>

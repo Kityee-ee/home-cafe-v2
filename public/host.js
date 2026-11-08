@@ -1,4 +1,4 @@
-import { countDrinks, drinkLabel } from "/menu.js";
+import { drinkLabel } from "/menu.js";
 
 const $ = (id) => document.getElementById(id);
 const key = new URLSearchParams(location.search).get("key");
@@ -58,26 +58,48 @@ function renderPrep(guests) {
   prep.append(tally([...drinks].sort((a, b) => b[1] - a[1])));
 }
 
+// One row per guest: order number; name, when they last ordered and Remove; their drinks.
+// Remove sits under the name rather than in its own column, so three columns fit a phone.
 function renderOrders(guests) {
-  const box = $("orders");
-  box.replaceChildren();
+  const body = $("orders");
+  body.replaceChildren();
+  if (!guests.length) {
+    const tr = el("tr");
+    const td = el("td", "No orders yet.", "muted");
+    td.colSpan = 3;
+    tr.append(td);
+    body.append(tr);
+    return;
+  }
   for (const g of guests) {
-    const card = el("article", undefined, "card host-order");
-    const head = el("header");
-    head.append(
-      el("h2", `#${g.orderNo} ${g.name}`),
-      el("span", new Date(g.updatedAt).toLocaleString([], { weekday: "short", hour: "numeric", minute: "2-digit" }), "when"),
-    );
-    card.append(head);
-    card.append(tally(g.items.map((i) => [drinkLabel(i), i.qty])));
-    if (countDrinks(g.items) > 1) card.append(el("p", plural(countDrinks(g.items), "drink"), "muted"));
+    const tr = el("tr");
 
-    const remove = el("button", "Remove guest", "link-btn danger");
+    const no = el("td", g.orderNo, "o-no");
+
+    const who = el("th");
+    who.scope = "row";
+    who.append(
+      el("span", g.name, "o-name"),
+      el("span", new Date(g.updatedAt).toLocaleString([], { weekday: "short", hour: "numeric", minute: "2-digit" }), "o-when"),
+    );
+
+    const drinks = el("td");
+    const list = el("ul", undefined, "o-drinks");
+    for (const item of g.items) {
+      const li = el("li");
+      li.append(el("span", `${item.qty} ×`, "o-qty"), el("span", drinkLabel(item)));
+      list.append(li);
+    }
+    drinks.append(list);
+
+    const remove = el("button", "Remove", "link-btn danger o-remove");
     remove.type = "button";
+    remove.setAttribute("aria-label", `Remove ${g.name}`);
     remove.onclick = async () => {
       if (remove.dataset.armed !== "1") {
         remove.dataset.armed = "1";
-        remove.textContent = `Tap again to remove ${g.name}`;
+        remove.textContent = "Tap again";
+        remove.setAttribute("aria-label", `Tap again to remove ${g.name}`);
         return;
       }
       try {
@@ -86,8 +108,10 @@ function renderOrders(guests) {
         $("host-status").textContent = err.message;
       }
     };
-    card.append(remove);
-    box.append(card);
+    who.append(remove);
+
+    tr.append(no, who, drinks);
+    body.append(tr);
   }
 }
 
