@@ -1,0 +1,558 @@
+/* Home Café v2: a phone-first ordering page. Warm cream background, espresso-brown
+   actions, white cards; colours and type taken from the Lovable sketch. */
+:root {
+  --bg: oklch(97.5% .006 80);
+  --fg: oklch(20% .015 50);
+  --card: oklch(99% .004 80);
+  --primary: oklch(36% .05 50);
+  --primary-press: oklch(30% .05 50);
+  --on-primary: oklch(98% .006 80);
+  --secondary: oklch(93% .012 75);
+  --secondary-press: oklch(89% .014 75);
+  --on-secondary: oklch(30% .04 50);
+  --muted: oklch(50% .015 55);
+  --line: oklch(91% .012 75);
+  --danger: oklch(48% .14 35);
+  --focus: oklch(55% .15 250);
+
+  --f-mark: "Barlow Condensed", "Arial Narrow", sans-serif;
+  --f-body: "Figtree", "Helvetica Neue", Arial, sans-serif;
+
+  --gutter: 24px;
+  --r-card: 24px;
+  --shadow: 0 1px 2px oklch(30% .03 50 / .06), 0 4px 16px oklch(30% .03 50 / .06);
+
+  --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
+  --ease-drawer: cubic-bezier(0.32, 0.72, 0, 1);
+
+  color-scheme: light;
+}
+
+* { box-sizing: border-box; }
+[hidden] { display: none !important; }
+
+html {
+  -webkit-tap-highlight-color: transparent;
+  -webkit-text-size-adjust: 100%;
+  background: var(--bg);
+}
+html:has(dialog[open]) { overflow: hidden; }
+
+body {
+  margin: 0;
+  font: 16px/1.5 var(--f-body);
+  color: var(--fg);
+  background: var(--bg);
+}
+
+h1, h2, h3 { margin: 0; font-weight: 600; line-height: 1.15; text-wrap: balance; }
+p { margin: 0; }
+ul { list-style: none; margin: 0; padding: 0; }
+.muted { color: var(--muted); }
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+.icon { width: 24px; height: 24px; flex: none; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+
+button {
+  font: inherit;
+  color: inherit;
+  cursor: pointer;
+  touch-action: manipulation;
+  user-select: none;
+  -webkit-user-select: none;
+}
+:focus-visible { outline: 3px solid var(--focus); outline-offset: 2px; }
+
+.page {
+  max-width: 480px;
+  margin: 0 auto;
+  padding: max(28px, env(safe-area-inset-top, 0px)) max(var(--gutter), env(safe-area-inset-right, 0px)) 0 max(var(--gutter), env(safe-area-inset-left, 0px));
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+}
+
+/* Header */
+.top { display: flex; align-items: center; justify-content: space-between; gap: 16px; }
+.wordmark {
+  font-family: var(--f-mark);
+  font-weight: 700;
+  font-size: 1.9rem;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: var(--primary);
+  line-height: 1;
+}
+.bag {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 48px;
+  height: 48px;
+  border: 0;
+  border-radius: 50%;
+  background: var(--secondary);
+  color: var(--primary);
+}
+.badge {
+  position: absolute;
+  top: -4px;
+  right: -4px;
+  min-width: 22px;
+  height: 22px;
+  padding: 0 6px;
+  border-radius: 999px;
+  background: var(--primary);
+  color: var(--on-primary);
+  font-size: .75rem;
+  font-weight: 600;
+  line-height: 22px;
+  text-align: center;
+  font-variant-numeric: tabular-nums;
+  box-shadow: 0 0 0 2px var(--bg);
+}
+
+.hello { display: flex; flex-direction: column; gap: 6px; margin-top: -4px; }
+.hello h1 { font-size: 2.35rem; letter-spacing: -.025em; }
+.hello p { color: var(--muted); font-size: 1.05rem; }
+
+/* Cards */
+.card {
+  background: var(--card);
+  border-radius: var(--r-card);
+  padding: 24px;
+  box-shadow: var(--shadow);
+}
+
+.eyebrow { font-size: .92rem; font-weight: 600; color: var(--primary); }
+.invite h2 { font-size: 1.75rem; letter-spacing: -.015em; margin-top: 8px; }
+.series {
+  margin-top: 12px;
+  font-size: .78rem;
+  letter-spacing: .24em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+.details { margin: 16px 0 0; display: grid; }
+.details div {
+  display: grid;
+  grid-template-columns: 84px 1fr;
+  gap: 12px;
+  padding: 14px 0;
+  border-top: 1px dashed var(--line);
+}
+.details div:last-child { padding-bottom: 0; }
+.details dt { font-size: .75rem; letter-spacing: .16em; text-transform: uppercase; color: var(--muted); padding-top: 3px; }
+.details dd { margin: 0; min-width: 0; font-size: .97rem; }
+
+.link-btn {
+  background: none;
+  border: 0;
+  padding: 0;
+  color: var(--primary);
+  font-weight: 500;
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 4px;
+}
+.link-btn.danger { color: var(--danger); }
+
+.pill-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+  border: 0;
+  border-radius: 999px;
+  background: var(--secondary);
+  color: var(--on-secondary);
+  padding: 8px 12px 8px 16px;
+  font-size: .92rem;
+  font-weight: 500;
+}
+.pill-btn .icon { width: 18px; height: 18px; }
+
+.notice {
+  background: var(--card);
+  border-left: 4px solid var(--danger);
+  border-radius: 8px;
+  padding: 12px 16px;
+}
+
+/* Receipt: a paper ticket with a torn bottom edge, shown in the sheet after checkout and on the page. */
+.placed { display: flex; flex-direction: column; align-items: center; gap: 14px; }
+.placed > div { align-self: stretch; }
+.placed-note { color: var(--primary); font-weight: 500; font-size: .93rem; text-align: center; text-wrap: pretty; }
+
+/* The shadow lives on the wrapper so it follows the torn edge the mask cuts. */
+.receipt-wrap { filter: drop-shadow(0 6px 14px oklch(30% .03 50 / .14)); }
+.receipt {
+  --paper: oklch(99.6% .003 85);
+  --tooth: radial-gradient(circle at 8px 0, transparent 7px, #000 7.5px);
+  background: var(--paper);
+  padding: 26px 24px 38px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  text-align: center;
+  transform: rotate(-.6deg);
+  -webkit-mask: linear-gradient(#000 0 0) top / 100% calc(100% - 8px) no-repeat, var(--tooth) bottom / 16px 8px repeat-x;
+  mask: linear-gradient(#000 0 0) top / 100% calc(100% - 8px) no-repeat, var(--tooth) bottom / 16px 8px repeat-x;
+}
+.r-mark {
+  font-family: var(--f-mark);
+  font-weight: 700;
+  font-size: 1.6rem;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: var(--primary);
+  line-height: 1;
+}
+.r-series { margin-top: 6px; font-size: .7rem; letter-spacing: .2em; text-transform: uppercase; color: var(--muted); }
+.r-rule { border-top: 2px dashed var(--line); }
+.r-order {
+  font-family: var(--f-mark);
+  font-weight: 600;
+  font-size: 1.7rem;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  font-variant-numeric: tabular-nums;
+}
+.r-order:focus { outline: none; }
+.r-meta { margin: 0; display: flex; flex-direction: column; gap: 6px; text-align: left; }
+.r-meta div { display: flex; justify-content: space-between; align-items: baseline; gap: 16px; }
+.r-meta dt { flex: none; font-size: .72rem; letter-spacing: .14em; text-transform: uppercase; color: var(--muted); }
+.r-meta dd { margin: 0; min-width: 0; text-align: right; font-weight: 500; overflow-wrap: anywhere; font-variant-numeric: tabular-nums; }
+.r-items { display: flex; flex-direction: column; gap: 6px; text-align: left; }
+.r-items li { display: flex; gap: 14px; align-items: baseline; }
+.r-qty { flex: none; min-width: 1.6em; font-weight: 600; font-variant-numeric: tabular-nums; color: var(--primary); }
+.r-qty::after { content: " ×"; font-weight: 400; color: var(--muted); }
+.r-name { min-width: 0; overflow-wrap: anywhere; }
+.r-stamp {
+  align-self: center;
+  margin-top: 8px;
+  padding: 4px 16px;
+  border: 2.5px solid var(--stamp);
+  border-radius: 6px;
+  color: var(--stamp);
+  font-family: var(--f-mark);
+  font-weight: 700;
+  font-size: 1.15rem;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  transform: rotate(-6deg);
+  --stamp: oklch(56% .13 40);
+}
+
+/* Popular picks */
+.menu { display: flex; flex-direction: column; gap: 16px; }
+.menu-head { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+.menu-head h2 { font-size: 1.1rem; }
+
+.picks {
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: 84%;
+  gap: 12px;
+  margin-inline: calc(var(--gutter) * -1);
+  padding: 2px var(--gutter) 12px;
+  scroll-padding-inline: var(--gutter);
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  overscroll-behavior-x: contain;
+  scrollbar-width: none;
+}
+.picks::-webkit-scrollbar { display: none; }
+.pick { scroll-snap-align: start; min-width: 0; }
+.pick-card {
+  height: 100%;
+  background: var(--card);
+  border-radius: var(--r-card);
+  overflow: hidden;
+  box-shadow: var(--shadow);
+}
+.pick-media {
+  position: relative;
+  aspect-ratio: 4 / 5;
+  background: oklch(92% .015 80);
+}
+.pick-media video,
+.pick-media img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 50% 58%;
+  display: block;
+}
+/* The still (the finished drink) sits on top until the pour starts, then fades away;
+   the video ends on that same frame, so there's no jump either way. */
+.pick-media img { transition: opacity 250ms var(--ease-out); }
+.pick-media.playing img { opacity: 0; }
+
+.pick-add {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  border: 0;
+  border-radius: 50%;
+  background: var(--primary);
+  color: var(--on-primary);
+  box-shadow: 0 2px 8px oklch(20% .03 50 / .25);
+}
+.pick-qty {
+  position: absolute;
+  top: 18px;
+  left: 14px;
+  padding: 4px 10px;
+  border-radius: 999px;
+  background: var(--card);
+  color: var(--primary);
+  font-size: .85rem;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  box-shadow: 0 1px 4px oklch(20% .03 50 / .15);
+}
+.pick-text { padding: 16px 20px 20px; display: flex; flex-direction: column; gap: 2px; }
+.pick-text h3 { font-size: 1.12rem; font-weight: 500; }
+.pick-text p { color: var(--muted); font-size: .93rem; }
+
+/* Who's coming */
+.guests { display: flex; flex-direction: column; gap: 12px; }
+.guests h2 { font-size: 1.1rem; display: flex; align-items: center; gap: 8px; }
+.count {
+  min-width: 24px;
+  padding: 0 8px;
+  border-radius: 999px;
+  background: var(--secondary);
+  color: var(--on-secondary);
+  font-size: .8rem;
+  line-height: 24px;
+  text-align: center;
+}
+.count:empty { display: none; }
+.board-list { display: flex; flex-direction: column; }
+.board-list li { display: flex; justify-content: space-between; align-items: baseline; gap: 16px; padding: 8px 0; }
+.board-list li + li { border-top: 1px dashed var(--line); }
+.board-list .who { flex: 0 0 auto; max-width: 50%; font-weight: 600; overflow-wrap: anywhere; }
+.board-list .what { flex: 1 1 0; color: var(--muted); font-size: .93rem; text-align: right; min-width: 0; overflow-wrap: anywhere; }
+
+/* Order button: rests at the end of the page, as in the sketch. Once there's something in
+   the bag it also floats at the bottom while scrolling, so the order is always one tap away. */
+.order-cta {
+  position: relative;
+  z-index: 5;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  width: 100%;
+  margin: -8px 0 max(24px, env(safe-area-inset-bottom, 0px));
+  padding: 18px 20px 18px 24px;
+  border: 0;
+  border-radius: var(--r-card);
+  background: var(--primary);
+  color: var(--on-primary);
+  text-align: left;
+  box-shadow: 0 8px 24px oklch(20% .03 50 / .28);
+}
+.order-cta.floating { position: sticky; bottom: max(16px, env(safe-area-inset-bottom, 0px)); }
+.cta-icon { width: 28px; height: 28px; }
+.cta-text { flex: 1; min-width: 0; display: flex; flex-direction: column; line-height: 1.3; }
+.cta-title { font-size: 1.15rem; font-weight: 600; }
+.cta-sub { font-size: .9rem; opacity: .8; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+/* Sheets */
+.sheet {
+  --sheet-hidden: translateY(100%);
+  --sheet-fade: 1;
+  width: min(480px, 100%);
+  max-width: 100%;
+  max-height: min(88dvh, 760px);
+  margin: auto auto 0;
+  padding: 24px var(--gutter) max(24px, env(safe-area-inset-bottom, 0px));
+  border: 0;
+  border-radius: 28px 28px 0 0;
+  background: var(--bg);
+  color: var(--fg);
+  box-shadow: 0 -8px 32px oklch(20% .03 50 / .18);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  transition: transform 400ms var(--ease-drawer), opacity 400ms var(--ease-drawer);
+}
+.sheet::backdrop {
+  background: oklch(20% .02 50 / .4);
+  transition: opacity 400ms var(--ease-drawer);
+}
+.sheet.closing { transform: var(--sheet-hidden); opacity: var(--sheet-fade); transition-duration: 250ms; }
+.sheet.closing::backdrop { opacity: 0; transition-duration: 250ms; }
+@starting-style {
+  .sheet[open] { transform: var(--sheet-hidden); opacity: var(--sheet-fade); }
+  .sheet[open]::backdrop { opacity: 0; }
+}
+@media (min-width: 560px) {
+  .sheet {
+    --sheet-hidden: scale(.96);
+    --sheet-fade: 0;
+    margin: auto;
+    border-radius: 28px;
+    transition-duration: 250ms;
+    transition-timing-function: var(--ease-out);
+  }
+  .sheet::backdrop { transition-duration: 250ms; }
+}
+.sheet-head { display: flex; justify-content: space-between; align-items: flex-start; gap: 16px; margin-bottom: 12px; }
+.sheet-head h2 { font-size: 1.35rem; padding-top: 4px; }
+.sheet-head .muted { font-size: .93rem; margin-top: 2px; }
+.sheet-close {
+  display: grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  margin: -2px -8px 0 0;
+  border: 0;
+  border-radius: 50%;
+  background: none;
+  color: var(--fg);
+}
+
+/* Order lines with steppers */
+.lines li { display: flex; align-items: center; gap: 12px; padding: 14px 0; }
+.lines li + li { border-top: 1px solid var(--line); }
+.line-text { flex: 1; min-width: 0; display: flex; flex-direction: column; }
+.line-name { font-weight: 500; font-size: 1.05rem; overflow-wrap: anywhere; }
+.line-desc { color: var(--muted); font-size: .9rem; }
+.stepper { flex: none; display: flex; align-items: center; gap: 4px; }
+.stepper output { min-width: 28px; text-align: center; font-size: 1.05rem; font-variant-numeric: tabular-nums; }
+.step {
+  display: grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  border: 0;
+  border-radius: 50%;
+  background: var(--secondary);
+  color: var(--fg);
+}
+.step .icon { width: 20px; height: 20px; }
+.step:disabled { opacity: .4; cursor: not-allowed; }
+.empty { padding: 8px 0 20px; }
+
+.order-form { display: flex; flex-direction: column; gap: 12px; margin-top: 12px; }
+input {
+  font: inherit;
+  font-size: 1.05rem;
+  color: var(--fg);
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  padding: 15px 22px;
+  width: 100%;
+}
+input::placeholder { color: var(--muted); }
+input:focus { outline: none; border-color: var(--primary); box-shadow: 0 0 0 3px oklch(36% .05 50 / .15); }
+
+.btn {
+  width: 100%;
+  border: 0;
+  border-radius: 999px;
+  background: var(--primary);
+  color: var(--on-primary);
+  padding: 16px 24px;
+  font-weight: 600;
+  font-size: 1.05rem;
+}
+.btn:disabled { opacity: .45; cursor: not-allowed; }
+
+.status { min-height: 1.4em; margin-top: -4px; text-align: center; font-size: .92rem; color: var(--muted); }
+.status:empty { display: none; }
+.status.error { color: var(--danger); }
+.hint { font-size: .88rem; color: var(--muted); text-align: center; text-wrap: pretty; }
+#cancel-btn { display: block; margin: 20px auto 0; }
+
+/* The basics */
+.basics { margin-bottom: 20px; }
+.basics li { display: flex; align-items: center; gap: 12px; padding: 16px 0; }
+.basics li + li { border-top: 1px solid var(--line); }
+.temps { flex: none; display: flex; gap: 8px; }
+.temp-add {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  min-width: 76px;
+  justify-content: center;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: var(--card);
+  color: var(--primary);
+  padding: 8px 12px;
+  font-size: .92rem;
+  font-weight: 500;
+  font-variant-numeric: tabular-nums;
+}
+.temp-add .icon { width: 16px; height: 16px; stroke-width: 2.2; }
+.temp-add.in { background: var(--primary); border-color: var(--primary); color: var(--on-primary); }
+
+/* Order placed: the receipt prints inside the sheet. */
+.done { display: flex; flex-direction: column; gap: 16px; padding-top: 4px; }
+.done .muted { text-align: center; font-size: .93rem; text-wrap: pretty; padding-inline: 8px; }
+#order-title { overflow-wrap: anywhere; }
+
+/* Press feedback: the browser's tap highlight is off, so every control answers on pointer-down. */
+.bag, .pill-btn, .pick-add, .order-cta, .step, .btn, .temp-add, .sheet-close {
+  transition: transform 120ms var(--ease-out), background-color 120ms var(--ease-out), opacity 120ms var(--ease-out);
+}
+.bag:active, .pill-btn:active, .step:active:not(:disabled), .sheet-close:active { background: var(--secondary-press); }
+.pick-add:active, .order-cta:active, .btn:active:not(:disabled), .temp-add.in:active { background: var(--primary-press); }
+.temp-add:not(.in):active { background: var(--secondary); }
+.link-btn:active { opacity: .6; }
+@media (hover: hover) and (pointer: fine) {
+  .bag:hover, .pill-btn:hover, .step:hover:not(:disabled), .sheet-close:hover { background: var(--secondary-press); }
+  .pick-add:hover, .order-cta:hover, .btn:hover:not(:disabled) { background: var(--primary-press); }
+  .temp-add:not(.in):hover { background: var(--secondary); }
+}
+@media (prefers-reduced-motion: no-preference) {
+  .pill-btn:active, .step:active:not(:disabled), .btn:active:not(:disabled), .temp-add:active, .bag:active { transform: scale(.96); }
+  .pick-add:active { transform: scale(.9); }
+  .order-cta:active { transform: scale(.98); }
+  /* A drink landing in the order: the counters give a small bump. */
+  .bump { animation: bump 260ms var(--ease-out); }
+  /* Checkout: the ticket feeds out top to bottom, then the stamp lands. */
+  .printing .receipt { animation: print 520ms var(--ease-out) 120ms backwards; }
+  .printing .r-stamp { animation: stamp 240ms var(--ease-out) 560ms backwards; }
+}
+@keyframes bump { 40% { transform: scale(1.2); } }
+@keyframes print { from { clip-path: inset(0 0 100% 0); transform: rotate(-.6deg) translateY(-20px); } }
+@keyframes stamp { from { opacity: 0; transform: rotate(-6deg) scale(1.6); } }
+@keyframes fade-in { from { opacity: 0; } }
+
+@media (prefers-reduced-motion: reduce) {
+  .sheet { --sheet-hidden: none; --sheet-fade: 0; transition-duration: 200ms; }
+  .sheet::backdrop { transition-duration: 200ms; }
+  .printing .receipt { animation: fade-in 200ms var(--ease-out) backwards; }
+}
+
+/* Host view */
+.host-page { padding-bottom: 48px; gap: 20px; }
+.host-page h1 { font-size: 1.9rem; letter-spacing: -.02em; margin-top: 4px; }
+.host-page .card { display: flex; flex-direction: column; gap: 12px; }
+.host-page .card h2 { font-size: 1.15rem; }
+.host-page h3 { font-size: .8rem; letter-spacing: .14em; text-transform: uppercase; color: var(--muted); font-weight: 500; margin-top: 8px; }
+.tally li { display: flex; justify-content: space-between; gap: 16px; padding: 6px 0; }
+.tally li + li { border-top: 1px dashed var(--line); }
+.tally .n { font-weight: 600; font-variant-numeric: tabular-nums; }
+.host-order header { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; }
+.host-order h2 { overflow-wrap: anywhere; }
+.host-order .when { font-size: .85rem; color: var(--muted); white-space: nowrap; }
+.host-order .link-btn { align-self: flex-start; }

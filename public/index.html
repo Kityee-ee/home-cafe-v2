@@ -1,0 +1,167 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, interactive-widget=resizes-content">
+  <meta name="theme-color" content="#f8f5f0">
+  <meta name="robots" content="noindex">
+  <title>Home Café · Order your drink</title>
+  <meta name="description" content="Brunch at Kit's. Bring your own pastry and order your drink ahead.">
+  <meta property="og:title" content="Home Café · Order your drink">
+  <meta property="og:description" content="Brunch at Kit's. Bring your own pastry and order your drink ahead.">
+  <meta property="og:type" content="website">
+  <meta property="og:image" content="/og.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&family=Figtree:wght@400;500;600&display=swap">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%E2%98%95%3C/text%3E%3C/svg%3E">
+  <link rel="stylesheet" href="/styles.css">
+  <link rel="modulepreload" href="/menu.js">
+</head>
+<body>
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+    <defs>
+      <symbol id="i-bag" viewBox="0 0 24 24"><path d="M5 8h14l-1 11a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2z"/><path d="M9 11V7a3 3 0 0 1 6 0v4"/></symbol>
+      <symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></symbol>
+      <symbol id="i-minus" viewBox="0 0 24 24"><path d="M5 12h14"/></symbol>
+      <symbol id="i-chevron" viewBox="0 0 24 24"><path d="m9 6 6 6-6 6"/></symbol>
+      <symbol id="i-close" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6 6 18"/></symbol>
+    </defs>
+  </svg>
+
+  <main class="page">
+    <header class="top">
+      <p class="wordmark">Home Café</p>
+      <button type="button" class="bag" id="bag-btn" aria-label="Your order">
+        <svg class="icon" aria-hidden="true"><use href="#i-bag"/></svg>
+        <span class="badge" id="bag-count" hidden></span>
+      </button>
+    </header>
+
+    <section class="hello">
+      <h1>Good day.</h1>
+      <p>What can we get you today?</p>
+    </section>
+
+    <section class="card invite" aria-labelledby="invite-title">
+      <p class="eyebrow">You're invited</p>
+      <h2 id="invite-title">Brunch at Kit's Home Cafe</h2>
+      <p class="series">BYOP Series</p>
+      <dl class="details">
+        <div><dt>When</dt><dd id="when">Date TBC · 11:30am</dd></div>
+        <div>
+          <dt>Where</dt>
+          <dd><span id="where">U221, 139 Boundary Road, North Melbourne VIC 3051</span>
+            <button type="button" id="copy-address" class="link-btn">Copy address</button></dd>
+        </div>
+        <div><dt>The deal</dt><dd><strong>Bring your own pastry.</strong> Order your drink here and Kit will make it when you arrive.</dd></div>
+      </dl>
+    </section>
+
+    <p id="load-error" class="notice" role="alert" hidden></p>
+
+    <section class="placed" id="placed" aria-label="Your receipt" hidden>
+      <div id="p-receipt"></div>
+      <p class="placed-note" id="p-note" hidden>You've made changes. Open your order and tap Update to send them to Kit.</p>
+      <button type="button" class="link-btn" id="p-change">Change order</button>
+    </section>
+
+    <section class="menu" aria-labelledby="picks-title">
+      <div class="menu-head">
+        <h2 id="picks-title">Popular Picks</h2>
+        <button type="button" class="pill-btn" id="more-btn" aria-haspopup="dialog">More options
+          <svg class="icon" aria-hidden="true"><use href="#i-chevron"/></svg></button>
+      </div>
+      <ul class="picks" id="picks" aria-label="Popular picks"></ul>
+    </section>
+
+    <section class="card guests" aria-labelledby="guests-title">
+      <h2 id="guests-title">Who's coming <span class="count" id="guest-count"></span></h2>
+      <ul id="board-list" class="board-list"><li class="muted">No one yet. You could be first.</li></ul>
+    </section>
+
+    <button type="button" class="order-cta" id="order-cta" aria-haspopup="dialog">
+      <svg class="icon cta-icon" aria-hidden="true"><use href="#i-bag"/></svg>
+      <span class="cta-text">
+        <span class="cta-title" id="cta-title">Order ahead</span>
+        <span class="cta-sub" id="cta-sub">Tap + on a drink to start</span>
+      </span>
+      <svg class="icon" aria-hidden="true"><use href="#i-chevron"/></svg>
+    </button>
+  </main>
+
+  <p class="sr-only" id="announce" aria-live="polite"></p>
+
+  <dialog class="sheet" id="basics-sheet" aria-labelledby="basics-title">
+    <div class="sheet-head">
+      <div>
+        <h2 id="basics-title">The basics</h2>
+        <p class="muted">Everyday coffee, hot or iced.</p>
+      </div>
+      <button type="button" class="sheet-close" data-close aria-label="Close">
+        <svg class="icon" aria-hidden="true"><use href="#i-close"/></svg></button>
+    </div>
+    <ul class="basics" id="basics"></ul>
+    <button type="button" class="btn" id="basics-review">Review order</button>
+  </dialog>
+
+  <dialog class="sheet" id="order-sheet" aria-labelledby="order-title">
+    <div class="sheet-head">
+      <h2 id="order-title">Your order</h2>
+      <button type="button" class="sheet-close" data-close aria-label="Close">
+        <svg class="icon" aria-hidden="true"><use href="#i-close"/></svg></button>
+    </div>
+
+    <div id="order-edit">
+      <p class="muted empty" id="order-empty">Nothing here yet. Tap + on a drink.</p>
+      <ul class="lines" id="order-lines" aria-label="Drinks in your order"></ul>
+      <form id="order-form" class="order-form" novalidate>
+        <label for="name" class="sr-only">Your name</label>
+        <input id="name" name="name" maxlength="40" autocomplete="given-name" autocapitalize="words" enterkeyhint="send" placeholder="Your name" required>
+        <button type="submit" class="btn" id="place-btn">Place order</button>
+        <p class="status" id="order-status" role="status"></p>
+        <p class="hint" id="order-hint">Kit makes everything when you arrive. You can change your order any time before brunch.</p>
+      </form>
+      <button type="button" class="link-btn danger" id="cancel-btn" hidden>Cancel my order</button>
+    </div>
+
+    <div class="done" id="order-done" hidden>
+      <div id="done-receipt"></div>
+      <p class="muted" id="done-text"></p>
+      <button type="button" class="btn" data-close>Done</button>
+    </div>
+  </dialog>
+
+  <!-- One receipt design, filled in twice: in the order sheet right after checkout, and on the page. -->
+  <template id="receipt-tpl">
+    <div class="receipt-wrap">
+      <article class="receipt">
+        <header class="r-head">
+          <p class="r-mark">Home Café</p>
+          <p class="r-series">Brunch at Kit's · BYOP Series</p>
+        </header>
+        <p class="r-rule"></p>
+        <h3 class="r-order" tabindex="-1">Order #<span data-r="no"></span></h3>
+        <dl class="r-meta">
+          <div><dt>Guest</dt><dd data-r="name"></dd></div>
+          <div><dt data-r="time-label">Placed</dt><dd data-r="time"></dd></div>
+        </dl>
+        <p class="r-rule"></p>
+        <ul class="r-items" data-r="items" aria-label="Drinks"></ul>
+        <p class="r-rule"></p>
+        <dl class="r-meta">
+          <div><dt>Drinks</dt><dd data-r="count"></dd></div>
+          <div><dt>Bring</dt><dd>Your own pastry</dd></div>
+          <div><dt>When</dt><dd data-r="when"></dd></div>
+        </dl>
+        <p class="r-stamp">See you there</p>
+      </article>
+    </div>
+  </template>
+
+  <script src="/app.js" type="module"></script>
+</body>
+</html>
