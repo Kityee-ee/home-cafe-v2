@@ -370,7 +370,7 @@ function renderEvent(event) {
   $("when").textContent = `${event.date} · ${event.time}`;
   $("where").textContent = event.address;
   // Google's universal Maps link: opens the app on a phone if installed, the website otherwise.
-  $("map-link").href = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(event.address)}`;
+  $("map-link").href = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(event.mapsQuery || event.address)}`;
 }
 
 function render() {
