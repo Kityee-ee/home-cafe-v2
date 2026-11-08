@@ -13,10 +13,10 @@ export const DRINKS = {
 
 // The video cards on the front page. All of them are served iced.
 export const POPULAR = [
-  { id: "latte", temp: "iced", desc: "Espresso and milk over ice", media: "latte" },
-  { id: "matcha-latte", temp: "iced", desc: "Matcha and milk over ice", media: "matcha" },
   { id: "mont-blanc", temp: "iced", desc: "Iced black coffee under a cream cap", media: "montblanc" },
+  { id: "latte", temp: "iced", desc: "Espresso and milk over ice", media: "latte" },
   { id: "orange-americano", temp: "iced", desc: "Orange juice and tonic water over ice", media: "orange_americano" },
+  { id: "matcha-latte", temp: "iced", desc: "Matcha and milk over ice", media: "matcha" },
 ];
 
 // "More options": the everyday coffees, hot or iced.

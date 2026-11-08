@@ -22,7 +22,7 @@
      size grows and leading loosens as it shrinks. The Barlow wordmark and receipt
      lettering sit outside the scale on purpose: they're signage, not text. */
   --t-display: 2.25rem;  /* 36px  "Good day." */
-  --t-title: 1.75rem;    /* 28px  invite title, host title */
+  --t-title: 1.5rem;     /* 24px  invite title, host title */
   --t-heading: 1.25rem;  /* 20px  section and panel headings, order button */
   --t-item: 1.0625rem;   /* 17px  drink names, order lines, buttons, inputs */
   --t-body: 1rem;        /* 16px  running text */
@@ -158,20 +158,22 @@ button {
 }
 
 .eyebrow { font-size: var(--t-small); font-weight: 600; color: var(--primary); }
-.invite h2 { font-size: var(--t-title); line-height: 1.1; letter-spacing: -.015em; margin-top: 8px; }
-.series { margin-top: 12px; }
-.details { margin: 16px 0 0; display: grid; }
+/* The invite is kept compact so the drinks start higher on a phone screen. */
+.invite { padding: 20px; }
+.invite h2 { font-size: var(--t-title); line-height: 1.1; letter-spacing: -.015em; margin-top: 6px; }
+.series { margin-top: 8px; }
+.details { margin: 12px 0 0; display: grid; }
 .details div {
   display: grid;
   /* In rem, so the label column widens with the text instead of wrapping "THE DEAL". */
   grid-template-columns: 5.25rem 1fr;
   gap: 12px;
-  padding: 14px 0;
+  padding: 10px 0;
   border-top: 1px dashed var(--line);
 }
 .details div:last-child { padding-bottom: 0; }
-.details dt { padding-top: 3px; }
-.details dd { margin: 0; min-width: 0; }
+.details dt { padding-top: 2px; }
+.details dd { margin: 0; min-width: 0; font-size: var(--t-small); line-height: 1.45; }
 
 .link-btn {
   background: none;
