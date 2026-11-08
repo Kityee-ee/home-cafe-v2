@@ -18,6 +18,17 @@
   --f-mark: "Barlow Condensed", "Arial Narrow", sans-serif;
   --f-body: "Figtree", "Helvetica Neue", Arial, sans-serif;
 
+  /* Type scale: every Figtree size on the page is one of these. Tracking tightens as
+     size grows and leading loosens as it shrinks. The Barlow wordmark and receipt
+     lettering sit outside the scale on purpose: they're signage, not text. */
+  --t-display: 2.25rem;  /* 36px  "Good day." */
+  --t-title: 1.75rem;    /* 28px  invite title, host title */
+  --t-heading: 1.25rem;  /* 20px  section and panel headings, order button */
+  --t-item: 1.0625rem;   /* 17px  drink names, order lines, buttons, inputs */
+  --t-body: 1rem;        /* 16px  running text */
+  --t-small: .875rem;    /* 14px  descriptions, hints, receipt details */
+  --t-label: .75rem;     /* 12px  uppercase labels */
+
   --gutter: 24px;
   --r-card: 24px;
   --shadow: 0 1px 2px oklch(30% .03 50 / .06), 0 4px 16px oklch(30% .03 50 / .06);
@@ -36,16 +47,30 @@ html {
   -webkit-text-size-adjust: 100%;
   background: var(--bg);
 }
+/* On iPhone and iPad, start from the reader's Text Size setting, so every rem on the
+   page grows or shrinks with it. Limited to iOS: desktop Safari's base size is smaller. */
+@supports (font: -apple-system-body) and (-webkit-touch-callout: none) {
+  html { font: -apple-system-body; }
+}
 html:has(dialog[open]) { overflow: hidden; }
 
 body {
   margin: 0;
-  font: 16px/1.5 var(--f-body);
+  font: 400 var(--t-body)/1.5 var(--f-body);
   color: var(--fg);
   background: var(--bg);
 }
 
-h1, h2, h3 { margin: 0; font-weight: 600; line-height: 1.15; text-wrap: balance; }
+h1, h2, h3 { margin: 0; font-weight: 600; line-height: 1.2; text-wrap: balance; }
+
+/* The one uppercase label style: BYOP SERIES, WHEN / WHERE, and the receipt's labels. */
+.series, .details dt, .r-series, .r-meta dt {
+  font-size: var(--t-label);
+  font-weight: 500;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
 p { margin: 0; }
 ul { list-style: none; margin: 0; padding: 0; }
 .muted { color: var(--muted); }
@@ -112,7 +137,7 @@ button {
   border-radius: 999px;
   background: var(--primary);
   color: var(--on-primary);
-  font-size: .75rem;
+  font-size: var(--t-label);
   font-weight: 600;
   line-height: 22px;
   text-align: center;
@@ -121,8 +146,8 @@ button {
 }
 
 .hello { display: flex; flex-direction: column; gap: 6px; margin-top: -4px; }
-.hello h1 { font-size: 2.35rem; letter-spacing: -.025em; }
-.hello p { color: var(--muted); font-size: 1.05rem; }
+.hello h1 { font-size: var(--t-display); line-height: 1.05; letter-spacing: -.025em; }
+.hello p { color: var(--muted); font-size: var(--t-item); line-height: 1.35; }
 
 /* Cards */
 .card {
@@ -132,26 +157,21 @@ button {
   box-shadow: var(--shadow);
 }
 
-.eyebrow { font-size: .92rem; font-weight: 600; color: var(--primary); }
-.invite h2 { font-size: 1.75rem; letter-spacing: -.015em; margin-top: 8px; }
-.series {
-  margin-top: 12px;
-  font-size: .78rem;
-  letter-spacing: .24em;
-  text-transform: uppercase;
-  color: var(--muted);
-}
+.eyebrow { font-size: var(--t-small); font-weight: 600; color: var(--primary); }
+.invite h2 { font-size: var(--t-title); line-height: 1.1; letter-spacing: -.015em; margin-top: 8px; }
+.series { margin-top: 12px; }
 .details { margin: 16px 0 0; display: grid; }
 .details div {
   display: grid;
-  grid-template-columns: 84px 1fr;
+  /* In rem, so the label column widens with the text instead of wrapping "THE DEAL". */
+  grid-template-columns: 5.25rem 1fr;
   gap: 12px;
   padding: 14px 0;
   border-top: 1px dashed var(--line);
 }
 .details div:last-child { padding-bottom: 0; }
-.details dt { font-size: .75rem; letter-spacing: .16em; text-transform: uppercase; color: var(--muted); padding-top: 3px; }
-.details dd { margin: 0; min-width: 0; font-size: .97rem; }
+.details dt { padding-top: 3px; }
+.details dd { margin: 0; min-width: 0; }
 
 .link-btn {
   background: none;
@@ -174,7 +194,7 @@ button {
   background: var(--secondary);
   color: var(--on-secondary);
   padding: 8px 12px 8px 16px;
-  font-size: .92rem;
+  font-size: var(--t-small);
   font-weight: 500;
 }
 .pill-btn .icon { width: 18px; height: 18px; }
@@ -189,7 +209,7 @@ button {
 /* Receipt: a paper ticket with a torn bottom edge, shown in the sheet after checkout and on the page. */
 .placed { display: flex; flex-direction: column; align-items: center; gap: 14px; }
 .placed > div { align-self: stretch; }
-.placed-note { color: var(--primary); font-weight: 500; font-size: .93rem; text-align: center; text-wrap: pretty; }
+.placed-note { color: var(--primary); font-weight: 500; font-size: var(--t-small); line-height: 1.45; text-align: center; text-wrap: pretty; }
 
 /* The shadow lives on the wrapper so it follows the torn edge the mask cuts. */
 .receipt-wrap { filter: drop-shadow(0 6px 14px oklch(30% .03 50 / .14)); }
@@ -215,7 +235,7 @@ button {
   color: var(--primary);
   line-height: 1;
 }
-.r-series { margin-top: 6px; font-size: .7rem; letter-spacing: .2em; text-transform: uppercase; color: var(--muted); }
+.r-series { margin-top: 6px; }
 .r-rule { border-top: 2px dashed var(--line); }
 .r-order {
   font-family: var(--f-mark);
@@ -228,9 +248,9 @@ button {
 .r-order:focus { outline: none; }
 .r-meta { margin: 0; display: flex; flex-direction: column; gap: 6px; text-align: left; }
 .r-meta div { display: flex; justify-content: space-between; align-items: baseline; gap: 16px; }
-.r-meta dt { flex: none; font-size: .72rem; letter-spacing: .14em; text-transform: uppercase; color: var(--muted); }
-.r-meta dd { margin: 0; min-width: 0; text-align: right; font-weight: 500; overflow-wrap: anywhere; font-variant-numeric: tabular-nums; }
-.r-items { display: flex; flex-direction: column; gap: 6px; text-align: left; }
+.r-meta dt { flex: none; }
+.r-meta dd { margin: 0; min-width: 0; text-align: right; font-size: var(--t-small); font-weight: 500; overflow-wrap: anywhere; font-variant-numeric: tabular-nums; }
+.r-items { display: flex; flex-direction: column; gap: 6px; text-align: left; font-size: var(--t-item); line-height: 1.35; }
 .r-items li { display: flex; gap: 14px; align-items: baseline; }
 .r-qty { flex: none; min-width: 1.6em; font-weight: 600; font-variant-numeric: tabular-nums; color: var(--primary); }
 .r-qty::after { content: " ×"; font-weight: 400; color: var(--muted); }
@@ -254,7 +274,7 @@ button {
 /* Popular picks */
 .menu { display: flex; flex-direction: column; gap: 16px; }
 .menu-head { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
-.menu-head h2 { font-size: 1.1rem; }
+.menu-head h2 { font-size: var(--t-heading); letter-spacing: -.01em; }
 
 .picks {
   display: grid;
@@ -320,25 +340,26 @@ button {
   border-radius: 999px;
   background: var(--card);
   color: var(--primary);
-  font-size: .85rem;
+  font-size: var(--t-small);
   font-weight: 600;
   font-variant-numeric: tabular-nums;
   box-shadow: 0 1px 4px oklch(20% .03 50 / .15);
 }
 .pick-text { padding: 16px 20px 20px; display: flex; flex-direction: column; gap: 2px; }
-.pick-text h3 { font-size: 1.12rem; font-weight: 500; }
-.pick-text p { color: var(--muted); font-size: .93rem; }
+.pick-text h3 { font-size: var(--t-item); line-height: 1.35; font-weight: 500; }
+.pick-text p { color: var(--muted); font-size: var(--t-small); line-height: 1.45; }
 
 /* Who's coming */
 .guests { display: flex; flex-direction: column; gap: 12px; }
-.guests h2 { font-size: 1.1rem; display: flex; align-items: center; gap: 8px; }
+.guests h2 { font-size: var(--t-heading); letter-spacing: -.01em; display: flex; align-items: center; gap: 8px; }
 .count {
   min-width: 24px;
   padding: 0 8px;
   border-radius: 999px;
   background: var(--secondary);
   color: var(--on-secondary);
-  font-size: .8rem;
+  font-size: var(--t-label);
+  letter-spacing: 0;
   line-height: 24px;
   text-align: center;
 }
@@ -347,7 +368,7 @@ button {
 .board-list li { display: flex; justify-content: space-between; align-items: baseline; gap: 16px; padding: 8px 0; }
 .board-list li + li { border-top: 1px dashed var(--line); }
 .board-list .who { flex: 0 0 auto; max-width: 50%; font-weight: 600; overflow-wrap: anywhere; }
-.board-list .what { flex: 1 1 0; color: var(--muted); font-size: .93rem; text-align: right; min-width: 0; overflow-wrap: anywhere; }
+.board-list .what { flex: 1 1 0; color: var(--muted); font-size: var(--t-small); line-height: 1.45; text-align: right; min-width: 0; overflow-wrap: anywhere; }
 
 /* Order button: rests at the end of the page, as in the sketch. Once there's something in
    the bag it also floats at the bottom while scrolling, so the order is always one tap away. */
@@ -370,8 +391,8 @@ button {
 .order-cta.floating { position: sticky; bottom: max(16px, env(safe-area-inset-bottom, 0px)); }
 .cta-icon { width: 28px; height: 28px; }
 .cta-text { flex: 1; min-width: 0; display: flex; flex-direction: column; line-height: 1.3; }
-.cta-title { font-size: 1.15rem; font-weight: 600; }
-.cta-sub { font-size: .9rem; opacity: .8; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.cta-title { font-size: var(--t-heading); font-weight: 600; letter-spacing: -.01em; }
+.cta-sub { font-size: var(--t-small); opacity: .8; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 
 /* Sheets */
 .sheet {
@@ -413,8 +434,8 @@ button {
   .sheet::backdrop { transition-duration: 250ms; }
 }
 .sheet-head { display: flex; justify-content: space-between; align-items: flex-start; gap: 16px; margin-bottom: 12px; }
-.sheet-head h2 { font-size: 1.35rem; padding-top: 4px; }
-.sheet-head .muted { font-size: .93rem; margin-top: 2px; }
+.sheet-head h2 { font-size: var(--t-heading); letter-spacing: -.01em; padding-top: 6px; }
+.sheet-head .muted { font-size: var(--t-small); margin-top: 2px; }
 .sheet-close {
   display: grid;
   place-items: center;
@@ -431,10 +452,10 @@ button {
 .lines li { display: flex; align-items: center; gap: 12px; padding: 14px 0; }
 .lines li + li { border-top: 1px solid var(--line); }
 .line-text { flex: 1; min-width: 0; display: flex; flex-direction: column; }
-.line-name { font-weight: 500; font-size: 1.05rem; overflow-wrap: anywhere; }
-.line-desc { color: var(--muted); font-size: .9rem; }
+.line-name { font-weight: 500; font-size: var(--t-item); line-height: 1.35; overflow-wrap: anywhere; }
+.line-desc { color: var(--muted); font-size: var(--t-small); line-height: 1.45; }
 .stepper { flex: none; display: flex; align-items: center; gap: 4px; }
-.stepper output { min-width: 28px; text-align: center; font-size: 1.05rem; font-variant-numeric: tabular-nums; }
+.stepper output { min-width: 28px; text-align: center; font-size: var(--t-item); font-variant-numeric: tabular-nums; }
 .step {
   display: grid;
   place-items: center;
@@ -452,7 +473,7 @@ button {
 .order-form { display: flex; flex-direction: column; gap: 12px; margin-top: 12px; }
 input {
   font: inherit;
-  font-size: 1.05rem;
+  font-size: max(var(--t-item), 16px); /* 16px or more, or iOS zooms the page on focus */
   color: var(--fg);
   background: var(--card);
   border: 1px solid var(--line);
@@ -471,14 +492,14 @@ input:focus { outline: none; border-color: var(--primary); box-shadow: 0 0 0 3px
   color: var(--on-primary);
   padding: 16px 24px;
   font-weight: 600;
-  font-size: 1.05rem;
+  font-size: var(--t-item);
 }
 .btn:disabled { opacity: .45; cursor: not-allowed; }
 
-.status { min-height: 1.4em; margin-top: -4px; text-align: center; font-size: .92rem; color: var(--muted); }
+.status { min-height: 1.4em; margin-top: -4px; text-align: center; font-size: var(--t-small); color: var(--muted); }
 .status:empty { display: none; }
 .status.error { color: var(--danger); }
-.hint { font-size: .88rem; color: var(--muted); text-align: center; text-wrap: pretty; }
+.hint { font-size: var(--t-small); line-height: 1.45; color: var(--muted); text-align: center; text-wrap: pretty; }
 #cancel-btn { display: block; margin: 20px auto 0; }
 
 /* The basics */
@@ -497,7 +518,7 @@ input:focus { outline: none; border-color: var(--primary); box-shadow: 0 0 0 3px
   background: var(--card);
   color: var(--primary);
   padding: 8px 12px;
-  font-size: .92rem;
+  font-size: var(--t-small);
   font-weight: 500;
   font-variant-numeric: tabular-nums;
 }
@@ -506,7 +527,7 @@ input:focus { outline: none; border-color: var(--primary); box-shadow: 0 0 0 3px
 
 /* Order placed: the receipt prints inside the sheet. */
 .done { display: flex; flex-direction: column; gap: 16px; padding-top: 4px; }
-.done .muted { text-align: center; font-size: .93rem; text-wrap: pretty; padding-inline: 8px; }
+.done .muted { text-align: center; font-size: var(--t-small); line-height: 1.45; text-wrap: pretty; padding-inline: 8px; }
 #order-title { overflow-wrap: anywhere; }
 
 /* Press feedback: the browser's tap highlight is off, so every control answers on pointer-down. */
@@ -545,14 +566,13 @@ input:focus { outline: none; border-color: var(--primary); box-shadow: 0 0 0 3px
 
 /* Host view */
 .host-page { padding-bottom: 48px; gap: 20px; }
-.host-page h1 { font-size: 1.9rem; letter-spacing: -.02em; margin-top: 4px; }
+.host-page h1 { font-size: var(--t-title); line-height: 1.1; letter-spacing: -.015em; margin-top: 4px; }
 .host-page .card { display: flex; flex-direction: column; gap: 12px; }
-.host-page .card h2 { font-size: 1.15rem; }
-.host-page h3 { font-size: .8rem; letter-spacing: .14em; text-transform: uppercase; color: var(--muted); font-weight: 500; margin-top: 8px; }
+.host-page .card h2 { font-size: var(--t-heading); letter-spacing: -.01em; }
 .tally li { display: flex; justify-content: space-between; gap: 16px; padding: 6px 0; }
 .tally li + li { border-top: 1px dashed var(--line); }
 .tally .n { font-weight: 600; font-variant-numeric: tabular-nums; }
 .host-order header { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; }
 .host-order h2 { overflow-wrap: anywhere; }
-.host-order .when { font-size: .85rem; color: var(--muted); white-space: nowrap; }
+.host-order .when { font-size: var(--t-small); color: var(--muted); white-space: nowrap; }
 .host-order .link-btn { align-self: flex-start; }
