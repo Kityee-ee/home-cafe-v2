@@ -186,6 +186,7 @@ button {
   text-underline-offset: 4px;
 }
 .link-btn.danger { color: var(--danger); }
+#map-link { display: inline-block; }
 
 .pill-btn {
   display: inline-flex;

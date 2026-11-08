@@ -369,6 +369,8 @@ function renderEvent(event) {
   if (!event) return;
   $("when").textContent = `${event.date} · ${event.time}`;
   $("where").textContent = event.address;
+  // Google's universal Maps link: opens the app on a phone if installed, the website otherwise.
+  $("map-link").href = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(event.address)}`;
 }
 
 function render() {
@@ -531,18 +533,6 @@ $("cancel-btn").addEventListener("click", async () => {
   render();
   await closeSheet($("order-sheet"));
   announce("Your order is cancelled.");
-});
-
-$("copy-address").addEventListener("click", async () => {
-  const btn = $("copy-address");
-  try {
-    await navigator.clipboard.writeText($("where").textContent);
-    btn.textContent = "Copied";
-  } catch {
-    getSelection().selectAllChildren($("where"));
-    btn.textContent = "Selected. Copy it from here.";
-  }
-  setTimeout(() => { btn.textContent = "Copy address"; }, 2500);
 });
 
 // ---------- start ----------
